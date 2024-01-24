@@ -1,4 +1,7 @@
 import requests
+import json
+import os
+import
 
 url_Alpha_Vantage = "https://www.alphavantage.co/query"
 
@@ -17,3 +20,5 @@ if response_blockchain.status_code == 200:
 else:
     print("Error:", response_blockchain.status_code, response_blockchain.text)
 
+with open('data.json', 'w') as file:
+    json.dump(response_blockchain.json(), file)
