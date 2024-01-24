@@ -13,7 +13,7 @@ response_blockchain = requests.get(url_Alpha_Vantage, params=param_blockchain)
 
 if response_blockchain.status_code == 200:
     print("Success!")
-    print(response_blockchain.json())  # 假设响应是 JSON 格式
+    print(response_blockchain.json())
 else:
     print("Error:", response_blockchain.status_code, response_blockchain.text)
 
