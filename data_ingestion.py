@@ -9,7 +9,7 @@ industries = [
     "retail_wholesale", "technology"
 ]
 # Define the keywords list
-keywords_list = ["data science", "machine learning", "artificial intelligence", "cs job"]
+keywords_list = ["data science", "machine learning", "artificial intelligence", "cs job"]  #
 # Fetch data from Alpha Vantage and News API
-fetch_alpha_vantage_data(apikey_Alpha_Vantage, industries)
+# fetch_alpha_vantage_data(apikey_Alpha_Vantage, industries)
 fetch_newsapi_data(apikey_news, keywords_list)
