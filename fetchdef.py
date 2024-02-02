@@ -52,3 +52,35 @@ def fetch_newsapi_data(apikey_news, keywords_list):
         # 将数据保存到 JSON 文件
         with open(f'data_newsapi/{keywords.replace(" ", "_")}.json', 'w') as file:
             json.dump(data, file, indent=4)
+
+
+# factch github data
+def fetch_github_repositories(query_list, language_list=["python"]):
+    os.makedirs('data_github', exist_ok=True)
+
+    url = "https://api.github.com/search/repositories"
+    if not query_list:
+        # 如果没有提供 query_list，对每种语言执行默认操作
+        for language in language_list:
+            params = {
+                'q': f'language:{language}',
+                'sort': 'stars',
+                'order': 'desc'
+            }
+            response = requests.get(url, params=params)
+            data = response.json()
+            with open(f'data_github/{language}.json', 'w') as file:
+                json.dump(data, file, indent=4)
+    else:
+        # 如果提供了 query_list，遍历它和 language_list
+        for query in query_list:
+            for language in language_list:
+                params = {
+                    'q': f'{query} language:{language}',
+                    'sort': 'stars',
+                    'order': 'desc'
+                }
+                response = requests.get(url, params=params)
+                data = response.json()
+                with open(f'data_github/{query}_{language}.json', 'w') as file:
+                    json.dump(data, file, indent=4)
