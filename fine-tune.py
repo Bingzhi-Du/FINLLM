@@ -2,7 +2,7 @@
 # from https://blog.futuresmart.ai/fine-tuning-gpt-35-a-step-by-step-guide
 import pandas as pd
 
-from data_pre
+from data_pre import read_all_json_files
 
 
 def convert_to_gpt35_format(dataset):
