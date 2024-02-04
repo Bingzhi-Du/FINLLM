@@ -14,9 +14,13 @@ def pp_read_json(file_path):
 venture_capital_data_file_location = "../FINLLM/data"
 
 
+
 def read_all_json_files(directory_path):
     json_files = glob.glob(f"{directory_path}/*.json")
+    return json_files
 
+
+def read_json_file_list(json_files):
     for json_file in json_files:
         # search for the file name
         # read the file into a dictionary
@@ -25,22 +29,18 @@ def read_all_json_files(directory_path):
             # Read the JSON file into a DataFrame
             df = pd.read_json(json_file)
             df_name = file_name
-            # Store the DataFrame in a dictionary with the file name as the key
-            df[df_name] = df
+            return convert_to_gpt35_format(df)
         else:
             print(f"Skipped a file with no name or 'None' name: {json_file}")
 
         # 使用文件名作为字典键
         # all_data[os.path.splitext(os.path.basename(json_file))[0]] = pp_read_json(json_file)
-    return df
 
 
 fin_dict = read_all_json_files(venture_capital_data_file_location)
 
 from sklearn.model_selection import train_test_split
 
-
-# Stratified splitting. Assuming 'Top Category' can be used for stratification
 def train_val_split(dataset):
     train_data, val_data = train_test_split(
         dataset,
@@ -49,3 +49,6 @@ def train_val_split(dataset):
         random_state=42  # for reproducibility
     )
     return train_data, val_data
+
+
+train_val_split
