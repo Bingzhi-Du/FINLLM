@@ -9,16 +9,12 @@ def pp_read_json(file_path):
     with open(file_path, 'r') as file:
         return json.load(file)
 
-
 ###data file location
 venture_capital_data_file_location = "../FINLLM/data"
-
-
 
 def read_all_json_files(directory_path):
     json_files = glob.glob(f"{directory_path}/*.json")
     return json_files
-
 
 def read_json_file_list(json_files):
     for json_file in json_files:

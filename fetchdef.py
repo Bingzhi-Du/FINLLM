@@ -55,7 +55,7 @@ def fetch_newsapi_data(apikey_news, keywords_list):
 
 
 # factch github data
-def fetch_github_repositories(query_list, language_list=["python"]):
+def fetch_github_repositories(query_list=["data science"], language_list=["python"]):
     os.makedirs('data_github', exist_ok=True)
 
     url = "https://api.github.com/search/repositories"
