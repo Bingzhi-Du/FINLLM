@@ -16,3 +16,25 @@ def convert_to_gpt35_format(dataset):
             ]
         })
     return fine_tuning_data
+
+def fine_tune_gpt35(fine_tuning_data):
+    openai
+    openai.api_key = 'sk-xxxxx'
+
+
+    # Create a new fine-tuning event
+    response = openai.FineTunes.create(
+        model="text-davinci-003",
+        data=fine_tuning_data,
+        description="Fine-tuning GPT-3.5 on custom support queries"
+    )
+
+    # Get the fine-tuning event ID
+    fine_tuning_event_id = response['id']
+    print(fine_tuning_event_id)
+
+    # Check the status of the fine-tuning event
+    response = openai.FineTunes.retrieve(fine_tuning_event_id)
+    print(response['status'])
+
+    # Retrieve the fine-tuned model
