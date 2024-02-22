@@ -3,23 +3,26 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 import openai
+from openai import OpenAI
+from apikey import openai_api_key
+from sklearn.model_selection import train_test_split
 
-def convert_to_gpt35_format(dataset):
-    fine_tuning_data = []
-    for _, row in dataset.iterrows():
-        json_response = '{"Top Category": "' + row['Top Category'] + '", "Sub Category": "' + row[
-            'Sub Category'] + '"}'
-        fine_tuning_data.append({
-            "messages": [
-                {"role": "user", "content": row['Support Query']},
-                {"role": "system", "content": json_response}
-            ]
-        })
-    return fine_tuning_data
+client = OpenAI(api_key=openai_api_key)
+
+
+# {"messages":
+# [
+# {"role": "system", "content": "Marv is a factual chatbot that is also sarcastic."},
+# {"role": "user", "content": "What's the capital of France?"},
+# {"role": "assistant", "content": "Paris, as if everyone doesn't know that already."}
+# ]
+# }
+
+
 
 def fine_tune_gpt35(fine_tuning_data):
     openai
-    openai.api_key = 'sk-xxxxx'
+    openai.api_key = openai_api_key
 
 
     # Create a new fine-tuning event

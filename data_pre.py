@@ -25,13 +25,28 @@ def read_json_file_list(json_files):
             # Read the JSON file into a DataFrame
             df = pd.read_json(json_file)
             df_name = file_name
-            return convert_to_gpt35_format(df)
+            return df, df_name
         else:
             print(f"Skipped a file with no name or 'None' name: {json_file}")
 
         # 使用文件名作为字典键
         # all_data[os.path.splitext(os.path.basename(json_file))[0]] = pp_read_json(json_file)
 
+
+def convert_to_gpt35_format(dataset):
+    fine_tuning_data = []
+    for _, row in dataset.iterrows():
+        json_response = '{"Top Category": "' + row['Top Category'] + '", "Sub Category": "' + row[
+            'Sub Category'] + '"}'
+        fine_tuning_data.append({
+            "messages": [
+                {"role": "system", "content": json_response},
+                {"role": "user", "content": row['Support Query']},
+                {"role": "assistant", "content": row['Support Response']}
+
+            ]
+        })
+    return fine_tuning_data
 
 fin_dict = read_all_json_files(venture_capital_data_file_location)
 
