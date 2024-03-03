@@ -1,5 +1,5 @@
 # Description: This file is used to fetch data from Alpha Vantage and News API
-from apikey import apikey_Alpha_Vantage, apikey_news
+from apikey import apikey_Alpha_Vantage, apikey_news, github_fine_grained_api_key
 from fetchdef import fetch_newsapi_data, fetch_alpha_vantage_data, fetch_github_repositories
 
 
