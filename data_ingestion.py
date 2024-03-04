@@ -1,6 +1,8 @@
 # Description: This file is used to fetch data from Alpha Vantage and News API
 from apikey import apikey_Alpha_Vantage, apikey_news, github_fine_grained_api_key
-from fetchdef import fetch_newsapi_data, fetch_alpha_vantage_data, fetch_github_repositories
+from fetchdef import fetch_newsapi_data, fetch_alpha_vantage_data, fetch_github_repositories_base, \
+    fetch_github_repositories_language
+
 
 
 # Define the industries list
@@ -23,9 +25,8 @@ query_list = ["data science", "machine learning", "artificial intelligence", "cs
 # Fetch data from Alpha Vantage and News API
 # fetch_alpha_vantage_data(apikey_Alpha_Vantage, industries)
 # fetch_newsapi_data(apikey_news, keywords_list)
-fetch_github_repositories(query_list=None, language_list=language_list)
-
-
+# fetch_github_repositories(query_list=None, language_list=language_list)
+fetch_github_repositories_language(github_fine_grained_api_key, per_page=100, max_pages=10)
 def num_tokens_from_messages(messages, model="gpt-3.5-turbo-0613"):
     """Returns the number of tokens used by a list of messages."""
     try:

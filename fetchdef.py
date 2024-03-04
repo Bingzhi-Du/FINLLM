@@ -4,6 +4,9 @@ import json
 import os
 from datetime import datetime, timedelta
 
+# test
+from apikey import apikey_Alpha_Vantage, apikey_news, github_fine_grained_api_key
+
 
 def fetch_alpha_vantage_data(apikey_Alpha_Vantage, industries):
     url_Alpha_Vantage = "https://www.alphavantage.co/query"
@@ -55,7 +58,7 @@ def fetch_newsapi_data(apikey_news, keywords_list):
 
 
 # factch github data
-def fetch_github_repositories(query_list=["data science"], language_list=["python"]):
+def fetch_github_repositories_base(query_list=["data science"], language_list=["python"]):
     os.makedirs('data_github', exist_ok=True)
 
     url = "https://api.github.com/search/repositories"
@@ -86,43 +89,38 @@ def fetch_github_repositories(query_list=["data science"], language_list=["pytho
                     json.dump(data, file, indent=4)
 
 
-def fetch_github_repositories_beta(query_list=["data science"], language_list=["python"], per_page=100, max_pages=10):
-    os.makedirs('data_github', exist_ok=True)
+def fetch_github_repositories_language(language_list=["python"], per_page=100, max_pages=10):
+    os.makedirs('data_github', exist_ok=True)  # 确保这里的目录名与你想要保存的目录一致
     url = "https://api.github.com/search/repositories"
 
-    # 可选：使用GitHub个人访问令牌（PAT）进行认证，以提高速率限制
-    headers = {
-        'Authorization': f'token {os.getenv("GITHUB_TOKEN")}'
-    }
+    for language in language_list:
+        all_repositories = []
+        for page in range(1, max_pages + 1):
+            params = {
+                'q': f'language:{language}',
+                'sort': 'stars',
+                'order': 'desc',
+                'per_page': per_page,
+                'page': page
+            }
+            response = requests.get(url, params=params)
+            if response.status_code == 200:
+                data = response.json()
+                repositories = data.get('items', [])
+                if not repositories:
+                    break  # 没有更多的仓库，退出循环
+                all_repositories.extend(repositories)
+            else:
+                print(f'Failed to fetch page {page}: {response.status_code}')
+                break  # 出错时停止爬取当前语言
 
-    for query in query_list:
-        for language in language_list:
-            all_repositories = []
-            for page in range(1, max_pages + 1):
-                params = {
-                    'q': f'{query} language:{language}',
-                    'sort': 'stars',
-                    'order': 'desc',
-                    'per_page': per_page,
-                    'page': page
-                }
-                response = requests.get(url, headers=headers, params=params)
-                if response.status_code == 200:
-                    data = response.json()
-                    repositories = data.get('items', [])
-                    if not repositories:
-                        break  # 如果没有更多结果，退出循环
-                    all_repositories.extend(repositories)
-                else:
-                    print(f'Failed to fetch page {page}: {response.status_code}')
-                    break  # 遇到错误时退出循环
-
-            # 将所有爬取的数据保存到文件
-            filename = f'data_github/{query}_{language}.json'
+        # 将所有仓库数据保存到文件，确保这一步在内部循环之外
+        if all_repositories:  # 仅当有数据时保存
+            filename = f'data_github/{language}_all.json'
             with open(filename, 'w') as file:
                 json.dump(all_repositories, file, indent=4)
             print(f'Successfully saved {len(all_repositories)} repositories to {filename}')
 
 
 # 示例调用
-fetch_github_repositories()
+fetch_github_repositories_beta_language(language_list=["python"], per_page=100, max_pages=10)
